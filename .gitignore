@@ -1,0 +1,46 @@
+# Secrets — never commit these
+.env
+.env.*
+!.env.example
+client_secrets.json
+.youtube-token.json
+
+# Claude Code local settings (may contain API keys in allow list)
+.claude/settings.local.json
+
+# Episode output (large MP4/JPG files)
+episodes/
+*.mp4
+*.jpg
+*.png
+
+# HeyGen CLI binary
+heygen-cli-bin/heygen.exe
+heygen-cli.zip
+
+# Motion graphics zip
+aligned-news-motion-graphics.zip
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# Node / Bun
+node_modules/
+
+# Logs
+task-run.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Studio background (large image — keep locally, not in repo)
+AAI_Master_Studio_Background_01.png
+kevin-studio-frame.jpg

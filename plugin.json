@@ -1,0 +1,17 @@
+{
+  "name": "aligned-news-video-pipeline",
+  "version": "1.0.0",
+  "description": "Automated AI video pipeline — Aligned News → HeyGen → YouTube. Built by Kevin Tunis at AI Automation Innovators.",
+  "author": "Kevin Tunis",
+  "homepage": "https://kevintunis.com",
+  "repository": "https://github.com/kevintunis/aligned-news-video-pipeline",
+  "community": "https://skool.com/ai-automation-innovators",
+  "skills": [
+    { "name": "video-pipeline", "path": ".agents/skills/video-pipeline/SKILL.md" },
+    { "name": "script-writer", "path": ".agents/skills/script-writer/SKILL.md" },
+    { "name": "heygen-renderer", "path": ".agents/skills/heygen-renderer/SKILL.md" },
+    { "name": "thumbnail-generator", "path": ".agents/skills/thumbnail-generator/SKILL.md" },
+    { "name": "youtube-uploader", "path": ".agents/skills/youtube-uploader/SKILL.md" },
+    { "name": "pipeline-logger", "path": ".agents/skills/pipeline-logger/SKILL.md" }
+  ]
+}
