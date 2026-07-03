@@ -44,3 +44,9 @@ Thumbs.db
 # Studio background (large image — keep locally, not in repo)
 AAI_Master_Studio_Background_01.png
 kevin-studio-frame.jpg
+
+# Runtime / pipeline-generated artifacts (local only)
+heygen-video-log.jsonl
+reliability-scorecard.jsonl
+monitor-retry.log
+task-backup.xml
