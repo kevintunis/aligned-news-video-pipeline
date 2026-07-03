@@ -51,6 +51,12 @@ const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || '';
 const AVATAR_ID = '726be335f74947bcab21b32ed692d093';
 const VOICE_ID  = 'a149bfff7f304562aa0d3cfd03c24bf9'; // Kevin custom voice clone
 
+// ── Channel branding ────────────────────────────────────────────────────────────
+// Appended verbatim to the bottom of every YouTube description. Keep exactly as
+// written — this is the channel's standard sign-off, not per-episode content.
+const ABOUT_KEVIN_BLOCK = `👤 ABOUT KEVIN
+I’m Kevin Tunis, founder of AI Automation Innovators. I build and document real AI automation systems for operators who want less manual work, better follow-up, and measurable business outcomes. No hype. Just workflows, agents, and systems that prove value.`;
+
 const OUTPUT_DIR = path.join(__dirname, 'episodes');
 const LOG_FILE   = path.join(__dirname, 'heygen-video-log.jsonl');
 
@@ -63,7 +69,9 @@ const SKIP_THUMB = args.includes('--skip-thumbnail');
 const _privIdx   = args.indexOf('--privacy');
 const PRIVACY    = _privIdx !== -1 ? args[_privIdx + 1] : 'private';
 const _pyIdx     = args.indexOf('--python');
-const PYTHON     = _pyIdx !== -1 ? args[_pyIdx + 1] : 'python';
+// Bare 'python' resolves to the Windows Store alias stub in the scheduled-task
+// PATH (WindowsApps precedes the real install), which errors instead of running.
+const PYTHON     = _pyIdx !== -1 ? args[_pyIdx + 1] : 'C:\\Users\\kevin\\AppData\\Local\\Python\\bin\\python.exe';
 
 // ── Validation ────────────────────────────────────────────────────────────────
 
@@ -104,6 +112,13 @@ function deriveMeta(brief) {
   ].filter((v, i, a) => a.indexOf(v) === i).slice(0, 20);
 
   return { title, desc, badge, tags };
+}
+
+// Appends the standard ABOUT_KEVIN_BLOCK to the bottom of a description.
+// Idempotent — safe to call even if the block is already present (e.g. a retried run).
+function appendAboutKevin(desc) {
+  if (desc.includes(ABOUT_KEVIN_BLOCK)) return desc;
+  return desc + '\n\n' + ABOUT_KEVIN_BLOCK;
 }
 
 // ── Script generation (Claude) ────────────────────────────────────────────────
@@ -331,7 +346,9 @@ async function run() {
   brief.signals.forEach(s => console.log(`  [${(s.badge || '').toUpperCase().padEnd(8)}] ${s.title}`));
   brief.stories.forEach(s => console.log(`  [STORY   ] ${s.headline || s.title || '(no title)'}`));
 
-  const { title, desc, badge, tags } = deriveMeta(brief);
+  const meta = deriveMeta(brief);
+  const { title, badge, tags } = meta;
+  let desc = meta.desc;
   console.log(`\nYT Title: ${title}`);
   console.log(`Badge:    ${badge}`);
 
@@ -372,6 +389,8 @@ async function run() {
   if (!SKIP_YT) {
     divider('STEP 5 — YouTube Upload');
     if (!thumbPath) console.log('No thumbnail — uploading video only.');
+    // Standard channel sign-off — always the final section of the description.
+    desc = appendAboutKevin(desc);
     uploadYouTube(outPath, thumbPath, title, desc, tags, badge);
     appendLog({ step: 'youtube_uploaded', title, privacy: PRIVACY, thumbnail: thumbPath });
   } else {
